@@ -1,0 +1,47 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: XmutantFactory
+    network: mode-sepolia
+    source:
+      address: "0x54f644C12C0b33Ce8B828B3aEb932e21727B10A8"
+      abi: XmutantFactory
+      startBlock: 14254848
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - CloneCreated
+      abis:
+        - name: XmutantFactory
+          file: ./abis/XmutantFactory.json
+      eventHandlers:
+        - event: CloneCreated(indexed address,indexed address,address,uint96)
+          handler: handleCloneCreated
+      file: ./src/xmutant-factory.ts
+templates:
+  - kind: ethereum/contract
+    name: XmutantERC721
+    network: mode-sepolia
+    source:
+      abi: XmutantERC721
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Token
+      abis:
+        - name: XmutantERC721
+          file: ./abis/XmutantERC721.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+        - event: Minted(indexed address,indexed uint256,string)
+          handler: handleMinted
+      file: ./src/erc721Mapping.ts

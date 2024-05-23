@@ -1,0 +1,33 @@
+type CloneCreated @entity(immutable: true) {
+  id: Bytes!
+  cloneAddress: Bytes! # address
+  deployer: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+type Collection @entity {
+  id: ID!
+  address: Bytes!
+  name: String!
+  symbol: String!
+  maxSupply: BigInt!
+  tokens: [Token!]! @derivedFrom(field: "collection")
+}
+
+type Token @entity {
+  id: ID!
+  tokenId: BigInt!
+  owner: Bytes!
+  mintedAt: BigInt!
+  metadataURI: String!
+  collection: Collection!
+}
+
+type Transfer @entity {
+  id: ID!
+  from: Bytes!
+  to: Bytes!
+  token: Token!
+  timestamp: BigInt!
+}
